@@ -2,7 +2,7 @@ import abc
 
 from typing import TYPE_CHECKING, Any, Optional
 
-from clipped.compact.pydantic import Extra, PrivateAttr
+from clipped.compact.pydantic import PrivateAttr
 from clipped.config.schema import BaseSchemaModel
 
 if TYPE_CHECKING:
@@ -14,7 +14,7 @@ class BaseService(BaseSchemaModel):
     _session: Optional[Any] = PrivateAttr(default=None)
 
     class Config:
-        extra = Extra.allow
+        extra = "allow"
 
     @classmethod
     def load_from_catalog(

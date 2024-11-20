@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Literal
 
 from clipped.compact.pydantic import Field, StrictStr
@@ -15,14 +15,18 @@ class Connection(BaseSchemaModel):
 
     name: StrictStr
     kind: ProviderKind
-    is_alias: Optional[bool] = Field(alias="isAlias", exclude=True)
-    description: Optional[StrictStr]
-    tags: Optional[Union[List[StrictStr], RefField]]
-    schema_: Optional[ConnectionSchema] = Field(alias="schema")
-    secret: Optional[Union[ConnectionResource, RefField]]
-    config_map: Optional[Union[ConnectionResource, RefField]] = Field(alias="configMap")
-    env: Optional[Union[List[Dict], RefField]]
-    annotations: Optional[Union[Dict, RefField]]
+    is_alias: Optional[bool] = Field(alias="isAlias", exclude=True, default=None)
+    description: Optional[StrictStr] = None
+    tags: Optional[Union[List[StrictStr], RefField]] = None
+    schema_: Optional[ConnectionSchema] = Field(alias="schema", default=None)
+    secret: Optional[Union[ConnectionResource, RefField]] = None
+    config_map: Optional[Union[ConnectionResource, RefField]] = Field(
+        alias="configMap", default=None
+    )
+    env: Optional[
+        Union[Dict[str, Any], List[Union[Tuple[str, str], List[str]]], RefField]
+    ] = None
+    annotations: Optional[Union[Dict, RefField]] = None
 
     @classmethod
     def from_model(cls, model) -> "Connection":

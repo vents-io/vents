@@ -9,8 +9,8 @@ class NotificationSpec(BaseSchemaModel):
     title: str
     description: str
     details: str
-    fallback: Optional[str]
-    context: Optional[Dict]
-    url: Optional[Uri]
-    color: Optional[str]
-    ts: Optional[datetime]
+    fallback: Optional[str] = None
+    context: Optional[Dict] = None
+    url: Optional[Uri] = None
+    color: Optional[str] = None
+    ts: Optional[datetime] = None
