@@ -10,7 +10,7 @@ class BucketConnection(BaseSchemaModel):
 
     kind: Optional[
         StrictStr
-    ]  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    ] = None  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
     bucket: StrictStr
 
     def patch(self, schema: "BucketConnection"):
@@ -22,10 +22,10 @@ class ClaimConnection(BaseSchemaModel):
 
     kind: Optional[
         StrictStr
-    ]  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    ] = None  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
     volume_claim: StrictStr = Field(alias="volumeClaim")
     mount_path: StrictStr = Field(alias="mountPath")
-    read_only: Optional[bool] = Field(alias="readOnly")
+    read_only: Optional[bool] = Field(alias="readOnly", default=None)
 
     def patch(self, schema: "ClaimConnection"):  # type: ignore
         self.volume_claim = schema.volume_claim or self.volume_claim
@@ -38,10 +38,10 @@ class HostPathConnection(BaseSchemaModel):
 
     kind: Optional[
         StrictStr
-    ]  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    ] = None  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
     host_path: StrictStr = Field(alias="hostPath")
     mount_path: StrictStr = Field(alias="mountPath")
-    read_only: Optional[bool] = Field(alias="readOnly")
+    read_only: Optional[bool] = Field(alias="readOnly", default=None)
 
     def patch(self, schema: "HostPathConnection"):  # type: ignore
         self.host_path = schema.host_path or self.host_path
@@ -54,9 +54,9 @@ class HostConnection(BaseSchemaModel):
 
     kind: Optional[
         StrictStr
-    ]  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    ] = None  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
     url: StrictStr
-    insecure: Optional[bool]
+    insecure: Optional[bool] = None
 
     def patch(self, schema: "HostConnection"):  # type: ignore
         self.url = schema.url or self.url
@@ -68,10 +68,10 @@ class GitConnection(BaseSchemaModel):
 
     kind: Optional[
         StrictStr
-    ]  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
-    url: Optional[StrictStr]
-    revision: Optional[StrictStr]
-    flags: Optional[List[StrictStr]]
+    ] = None  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    url: Optional[StrictStr] = None
+    revision: Optional[StrictStr] = None
+    flags: Optional[List[StrictStr]] = None
 
     def get_name(self):
         if self.url:

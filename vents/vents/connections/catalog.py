@@ -8,10 +8,10 @@ from vents.connections.connection_resource import ConnectionResource
 
 
 class ConnectionCatalog(BaseSchemaModel):
-    connections: Optional[List[Connection]]
+    connections: Optional[List[Connection]] = None
     _all_connections: List[Connection] = PrivateAttr()
-    _secrets: Optional[List[ConnectionResource]] = PrivateAttr()
-    _config_maps: Optional[List[ConnectionResource]] = PrivateAttr()
+    _secrets: Optional[List[ConnectionResource]] = PrivateAttr(default=None)
+    _config_maps: Optional[List[ConnectionResource]] = PrivateAttr(default=None)
     _connections_by_names: Dict[str, Connection] = PrivateAttr()
 
     def __init__(

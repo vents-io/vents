@@ -22,13 +22,13 @@ if TYPE_CHECKING:
 
 
 class GCPService(BaseService):
-    project_id: Optional[str]
-    key_path: Optional[str]
-    keyfile_dict: Optional[str]
-    scopes: Optional[List[str]]
-    credentials: Optional[Credentials]
-    client_info = Optional[Any]
-    client_options = Optional[Any]
+    project_id: Optional[str] = None
+    key_path: Optional[str] = None
+    keyfile_dict: Optional[str] = None
+    scopes: Optional[List[str]] = None
+    credentials: Optional[Credentials] = None
+    client_info: Optional[Any] = None
+    client_options: Optional[Any] = None
     encoding: Optional[str] = "utf-8"
 
     @classmethod

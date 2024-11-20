@@ -3,6 +3,7 @@ import os
 
 from typing import Any, List, Optional, Set, Type, Union
 
+from clipped.compact.pydantic import Field
 from clipped.config.parser import ConfigParser
 from clipped.config.schema import BaseSchemaModel
 from clipped.types import Uri
@@ -23,8 +24,10 @@ class AppConfig(BaseSchemaModel):
     context_path: Optional[str] = ""
     logger: Any = _logger
     exception: Type[Exception] = VentError
-    config_parser: Type[ConfigParser] = ConfigParser
-    catalog: Optional[ConnectionCatalog]
+    config_parser: Type[ConfigParser] = Field(
+        default=ConfigParser, alias="config_parser"
+    )
+    catalog: Optional[ConnectionCatalog] = None
 
     def __init__(self, **data: Any):
         super().__init__(**data)

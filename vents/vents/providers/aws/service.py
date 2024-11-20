@@ -22,14 +22,14 @@ if TYPE_CHECKING:
 
 
 class AWSService(BaseService):
-    resource: Optional[str]
-    region: Optional[str]
-    endpoint_url: Optional[str]
-    access_key_id: Optional[str]
-    secret_access_key: Optional[str]
-    session_token: Optional[str]
-    verify_ssl: Optional[bool]
-    use_ssl: Optional[bool]
+    resource: Optional[str] = None
+    region: Optional[str] = None
+    endpoint_url: Optional[str] = None
+    access_key_id: Optional[str] = None
+    secret_access_key: Optional[str] = None
+    session_token: Optional[str] = None
+    verify_ssl: Optional[bool] = None
+    use_ssl: Optional[bool] = None
 
     @classmethod
     def load_from_connection(

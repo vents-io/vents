@@ -8,8 +8,8 @@ class ConnectionResource(BaseSchemaModel):
     _IDENTIFIER = "connection_resource"
 
     name: StrictStr
-    mount_path: Optional[StrictStr] = Field(alias="mountPath")
-    host_path: Optional[StrictStr] = Field(alias="hostPath")
-    items: Optional[List[StrictStr]]
-    default_mode: Optional[str] = Field(alias="defaultMode")
-    is_requested: Optional[bool] = Field(alias="isRequested")
+    mount_path: Optional[StrictStr] = Field(alias="mountPath", default=None)
+    host_path: Optional[StrictStr] = Field(alias="hostPath", default=None)
+    items: Optional[List[StrictStr]] = None
+    default_mode: Optional[str] = Field(alias="defaultMode", default=None)
+    is_requested: Optional[bool] = Field(alias="isRequested", default=None)
