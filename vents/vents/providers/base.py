@@ -1,9 +1,10 @@
 import abc
 
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 from clipped.compact.pydantic import PrivateAttr
 from clipped.config.schema import BaseSchemaModel
+from clipped.utils.requests import create_session, safe_request
 
 if TYPE_CHECKING:
     from vents.connections.catalog import ConnectionCatalog
@@ -54,3 +55,17 @@ class BaseService(BaseSchemaModel):
     @abc.abstractmethod
     def load_from_connection(self, **kwargs):
         raise NotImplementedError
+
+
+class BaseHttpService(BaseService):
+    url: Optional[str] = None
+    session_attrs: Optional[Dict] = None
+    method: Optional[str] = None
+
+    def _set_session(self):
+        self._session = create_session(session_attrs=self.session_attrs)
+
+    def _execute(self, **kwargs):
+        return safe_request(
+            url=self.url, method=self.method, session=self.session, **kwargs
+        )
