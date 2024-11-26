@@ -1,7 +1,7 @@
 import logging
 import os
 
-from typing import Any, List, Optional, Set, Type, Union
+from typing import Any, Dict, List, Optional, Set, Type, Union
 
 from clipped.compact.pydantic import Field
 from clipped.config.parser import ConfigParser
@@ -33,7 +33,9 @@ class AppConfig(BaseSchemaModel):
         super().__init__(**data)
         self.catalog = self.catalog or self.load_connections_catalog()
 
-    def get_from_env(self, keys: Union[Set[str], List[str], str]) -> Any:
+    def read_keys_from_env(
+        self, keys: Union[Set[str], List[str], str], env: Optional[Dict] = None
+    ) -> Optional[Any]:
         """
         Returns a variable from one of the list of keys based on the os.env.
         Args:
@@ -42,11 +44,12 @@ class AppConfig(BaseSchemaModel):
         Returns:
             str | None
         """
+        env = env or os.environ
         keys = keys or []
         if not isinstance(keys, (list, tuple, set)):
             keys = [keys]
         for key in keys:
-            value = os.environ.get(key)
+            value = env.get(key)
             if value:
                 if value.lower() == "true":
                     return True
@@ -56,13 +59,13 @@ class AppConfig(BaseSchemaModel):
             # Prepend prefix if set
             if self.env_prefix:
                 key = "{}_{}".format(self.env_prefix, key)
-                value = os.environ.get(key)
+                value = env.get(key)
                 if value:
                     return value
 
         return None
 
-    def get_from_path(
+    def read_keys_from_path(
         self, context_paths: List[str], keys: Union[Set[str], List[str], str]
     ) -> Optional[Any]:
         """
@@ -76,13 +79,15 @@ class AppConfig(BaseSchemaModel):
         """
         context_paths = context_paths or []
         context_paths = [
-            c for c in context_paths if check_dirname_exists(c, is_dir=True)
+            c
+            for c in context_paths
+            if check_dirname_exists(c, is_dir=True, reraise=False)
         ]
         if not context_paths:
             return None
 
         keys = keys or []
-        if not isinstance(keys, (list, tuple)):
+        if not isinstance(keys, (list, tuple, set)):
             keys = [keys]  # type: ignore
         for key in keys:
             for context_path in context_paths:
@@ -99,6 +104,32 @@ class AppConfig(BaseSchemaModel):
                         return value
 
         return None
+
+    def read_keys_from_schema(
+        self, schema: Dict, keys: Union[Set[str], List[str], str]
+    ) -> Optional[Any]:
+        """Reads keys from a schema
+
+        Args:
+            schema: Dict. schema to read keys from
+            keys: list(str). list of keys to check in the environment
+
+        Returns:
+            str | None
+        """
+        if not schema:
+            return None
+        keys = keys or []
+        if not isinstance(keys, (list, tuple, set)):
+            keys = [keys]  # type: ignore
+        for key in keys:
+            value = schema.get(key)
+            if value:
+                if value.lower() == "true":
+                    return True
+                if value.lower() == "false":
+                    return False
+                return value
 
     def get_connections_catalog_env_name(self) -> str:
         env_name = "CONNECTIONS_CATALOG"
@@ -131,7 +162,12 @@ class AppConfig(BaseSchemaModel):
 
         return self.catalog.connections_by_names.get(name)
 
-    def read_keys(self, context_paths: List[str], keys: List[str]) -> Optional[Any]:
+    def read_keys(
+        self,
+        keys: List[str],
+        schema: Optional[Dict] = None,
+        context_paths: Optional[List[str]] = None,
+    ) -> Optional[Any]:
         """Returns a variable by checking first a context path and then in the environment."""
         keys = (
             {k.lower() for k in keys}
@@ -139,7 +175,11 @@ class AppConfig(BaseSchemaModel):
             | {"".join(k.lower().split("_")) for k in keys}
         )
         if context_paths:
-            value = self.get_from_path(context_paths=context_paths, keys=keys)
+            value = self.read_keys_from_path(context_paths=context_paths, keys=keys)
             if value is not None:
                 return value
-        return self.get_from_env(keys)
+        if schema:
+            value = self.read_keys_from_schema(schema=schema, keys=keys)
+            if value is not None:
+                return value
+        return self.read_keys_from_env(keys)
