@@ -27,7 +27,7 @@ class SlackService(BaseService):
         return cls(token=token)
 
     def _set_session(self):
-        from slack_sdk import AsyncWebClient, WebClient
+        from slack import AsyncWebClient, WebClient
 
         self._session = (
             AsyncWebClient(token=self.token)
@@ -42,6 +42,7 @@ class SlackService(BaseService):
 
 class SlackWebhookService(BaseService):
     url: Optional[str] = None
+    is_async: bool = False
 
     @classmethod
     def load_from_connection(
@@ -57,7 +58,7 @@ class SlackWebhookService(BaseService):
         return cls(url=url)
 
     def _set_session(self):
-        from slack_sdk import AsyncWebhookClient, WebhookClient
+        from slack import AsyncWebhookClient, WebhookClient
 
         self._session = (
             AsyncWebhookClient(url=self.url)

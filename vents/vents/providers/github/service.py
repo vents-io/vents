@@ -2,8 +2,6 @@ import os
 
 from typing import TYPE_CHECKING, Optional
 
-from github import Github as GithubClient
-
 from vents.providers.base import BaseService
 from vents.providers.github.base import get_host, get_token
 
@@ -32,7 +30,9 @@ class GithubService(BaseService):
 
     def _set_session(self):
         kwargs = {"base_url": self.host} if self.host else {}
-        self._session = GithubClient(login_or_token=self.token, **kwargs)
+        from github import Github
+
+        self._session = Github(login_or_token=self.token, **kwargs)
 
     def set_env_vars(self):
         if self.token:
