@@ -166,6 +166,7 @@ class AppConfig(BaseSchemaModel):
         self,
         keys: List[str],
         schema: Optional[Dict] = None,
+        env: Optional[Dict] = None,
         context_paths: Optional[List[str]] = None,
     ) -> Optional[Any]:
         """Returns a variable by checking first a context path and then in the environment."""
@@ -182,4 +183,8 @@ class AppConfig(BaseSchemaModel):
             value = self.read_keys_from_schema(schema=schema, keys=keys)
             if value is not None:
                 return value
-        return self.read_keys_from_env(keys)
+        if env:
+            value = self.read_keys_from_env(keys=keys, env=env)
+            if value is not None:
+                return value
+        return self.read_keys_from_env(keys=keys)

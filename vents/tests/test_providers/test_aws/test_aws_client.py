@@ -28,14 +28,10 @@ class TestAwsClient(TestCase):
         assert credentials.secret_key == "a2"
         assert credentials.token == "a3"
 
-        os.environ.pop("AWS_ACCESS_KEY_ID", "")
-        os.environ.pop("AWS_SECRET_ACCESS_KEY", "")
-        os.environ.pop("AWS_SECURITY_TOKEN", "")
-        os.environ.pop("AWS_REGION", "")
-        os.environ["VENTS_AWS_ACCESS_KEY_ID"] = "b1"
-        os.environ["VENTS_AWS_SECRET_ACCESS_KEY"] = "b2"
-        os.environ["VENTS_AWS_SECURITY_TOKEN"] = "b3"
-        os.environ["VENTS_AWS_REGION"] = "b4"
+        os.environ["AWS_ACCESS_KEY_ID"] = "b1"
+        os.environ["AWS_SECRET_ACCESS_KEY"] = "b2"
+        os.environ["AWS_SECURITY_TOKEN"] = "b3"
+        os.environ["AWS_REGION"] = "b4"
         aws_service = AWSService.load_from_connection(connection=None)
         session = aws_service.session
         assert isinstance(session, boto3.session.Session)
@@ -44,12 +40,6 @@ class TestAwsClient(TestCase):
         assert credentials.access_key == "b1"
         assert credentials.secret_key == "b2"
         assert credentials.token == "b3"
-
-        # Prevent moto unmock_env_variables from raising an error.
-        os.environ["AWS_ACCESS_KEY_ID"] = ""
-        os.environ["AWS_SECRET_ACCESS_KEY"] = ""
-        os.environ["AWS_SECURITY_TOKEN"] = ""
-        os.environ["AWS_REGION"] = ""
 
     @mock_aws
     def test_get_client(self):

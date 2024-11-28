@@ -37,13 +37,32 @@ class AzureService(BaseService):
                 context_paths.append(connection.secret.mount_path)
             if connection.config_map and connection.config_map.mount_path:
                 context_paths.append(connection.config_map.mount_path)
-        account_name = get_account_name(context_paths=context_paths)
-        account_key = get_account_key(context_paths=context_paths)
-        connection_string = get_connection_string(context_paths=context_paths)
-        sas_token = get_sas_token(context_paths=context_paths)
-        tenant_id = get_tenant_id(context_paths=context_paths)
-        client_id = get_client_id(context_paths=context_paths)
-        client_secret = get_client_secret(context_paths=context_paths)
+            if connection.schema:
+                schema = connection.schema
+            if connection.env:
+                builtin_env = connection.env
+
+        account_name = get_account_name(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        account_key = get_account_key(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        connection_string = get_connection_string(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        sas_token = get_sas_token(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        tenant_id = get_tenant_id(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        client_id = get_client_id(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        client_secret = get_client_secret(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
         return cls(
             account_name=account_name,
             account_key=account_key,

@@ -1,8 +1,9 @@
 import os
 
 from unittest import TestCase
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call, patch
 
+from vents.config import AppConfig
 from vents.providers.slack.service import (
     SlackHttpWebhookService,
     SlackService,
@@ -19,26 +20,36 @@ class TestSlackService(TestCase):
         self.assertEqual(service.token, self.token)
         self.assertFalse(service.is_async)
 
-    @patch("vents.providers.slack.service.get_token")
-    def test_load_from_connection_with_secret(self, mock_get_token):
-        mock_get_token.return_value = self.token
+    @patch.object(AppConfig, "read_keys")
+    def test_load_from_connection_with_secret(self, mock_read_keys):
+        mock_read_keys.return_value = self.token
 
         mock_connection = MagicMock()
         mock_connection.secret.mount_path = "/path/to/secret"
+        mock_connection.schema = None
+        mock_connection.env = None
+        mock_connection.config_map = None
 
         service = SlackService.load_from_connection(connection=mock_connection)
 
         self.assertEqual(service.token, self.token)
-        mock_get_token.assert_called_once_with(context_paths=["/path/to/secret"])
+        mock_read_keys.assert_called_once_with(
+            context_paths=["/path/to/secret"],
+            schema=None,
+            env=None,
+            keys=["SLACK_TOKEN"],
+        )
 
-    @patch("vents.providers.slack.service.get_token")
-    def test_load_from_connection_without_connection(self, mock_get_token):
-        mock_get_token.return_value = self.token
+    @patch.object(AppConfig, "read_keys")
+    def test_load_from_connection_without_connection(self, mock_read_keys):
+        mock_read_keys.return_value = self.token
 
         service = SlackService.load_from_connection(connection=None)
 
         self.assertEqual(service.token, self.token)
-        mock_get_token.assert_called_once_with(context_paths=[])
+        mock_read_keys.assert_called_once_with(
+            context_paths=[], schema=None, env=None, keys=["SLACK_TOKEN"]
+        )
 
     @patch("slack.WebClient")
     def test_set_session_sync(self, mock_web_client):
@@ -68,9 +79,9 @@ class TestSlackWebhookService(TestCase):
         service = SlackWebhookService(url=self.url)
         self.assertEqual(service.url, self.url)
 
-    @patch("vents.providers.slack.service.get_url")
-    def test_load_from_connection_with_secret(self, mock_get_url):
-        mock_get_url.return_value = self.url
+    @patch.object(AppConfig, "read_keys")
+    def test_load_from_connection_with_secret(self, mock_read_keys):
+        mock_read_keys.return_value = self.url
 
         mock_connection = MagicMock()
         mock_connection.secret.url = "/path/to/webhook"
@@ -78,7 +89,9 @@ class TestSlackWebhookService(TestCase):
         service = SlackWebhookService.load_from_connection(connection=mock_connection)
 
         self.assertEqual(service.url, self.url)
-        mock_get_url.assert_called_once_with(context_paths=["/path/to/webhook"])
+        mock_read_keys.assert_called_once_with(
+            context_paths=["/path/to/webhook"], keys=["SLACK_URL"]
+        )
 
     @patch("slack.WebhookClient")
     def test_set_session_sync(self, mock_webhook_client):
@@ -114,15 +127,9 @@ class TestSlackHttpWebhookService(TestCase):
         self.assertEqual(service.method, self.method)
         self.assertEqual(service.session_attrs, self.session_attrs)
 
-    @patch("vents.providers.slack.service.get_url")
-    @patch("vents.providers.slack.service.get_method")
-    @patch("vents.providers.slack.service.get_session_attrs")
-    def test_load_from_connection_with_secret(
-        self, mock_get_session_attrs, mock_get_method, mock_get_url
-    ):
-        mock_get_url.return_value = self.url
-        mock_get_method.return_value = self.method
-        mock_get_session_attrs.return_value = self.session_attrs
+    @patch.object(AppConfig, "read_keys")
+    def test_load_from_connection_with_secret(self, mock_read_keys):
+        mock_read_keys.side_effect = [self.url, self.method, self.session_attrs]
 
         mock_connection = MagicMock()
         mock_connection.secret.url = "/path/to/webhook"
@@ -135,21 +142,17 @@ class TestSlackHttpWebhookService(TestCase):
         self.assertEqual(service.method, self.method)
         self.assertEqual(service.session_attrs, self.session_attrs)
 
-        mock_get_url.assert_called_once_with(context_paths=["/path/to/webhook"])
-        mock_get_method.assert_called_once_with(context_paths=["/path/to/webhook"])
-        mock_get_session_attrs.assert_called_once_with(
-            context_paths=["/path/to/webhook"]
+        mock_read_keys.assert_has_calls(
+            [
+                call(context_paths=["/path/to/webhook"], keys=["SLACK_URL"]),
+                call(context_paths=["/path/to/webhook"], keys=["SLACK_METHOD"]),
+                call(context_paths=["/path/to/webhook"], keys=["SLACK_SESSION_ATTRS"]),
+            ]
         )
 
-    @patch("vents.providers.slack.service.get_url")
-    @patch("vents.providers.slack.service.get_method")
-    @patch("vents.providers.slack.service.get_session_attrs")
-    def test_load_from_connection_without_connection(
-        self, mock_get_session_attrs, mock_get_method, mock_get_url
-    ):
-        mock_get_url.return_value = self.url
-        mock_get_method.return_value = self.method
-        mock_get_session_attrs.return_value = self.session_attrs
+    @patch.object(AppConfig, "read_keys")
+    def test_load_from_connection_without_connection(self, mock_read_keys):
+        mock_read_keys.side_effect = [self.url, self.method, self.session_attrs]
 
         service = SlackHttpWebhookService.load_from_connection(connection=None)
 
@@ -157,6 +160,10 @@ class TestSlackHttpWebhookService(TestCase):
         self.assertEqual(service.method, self.method)
         self.assertEqual(service.session_attrs, self.session_attrs)
 
-        mock_get_url.assert_called_once_with(context_paths=[])
-        mock_get_method.assert_called_once_with(context_paths=[])
-        mock_get_session_attrs.assert_called_once_with(context_paths=[])
+        mock_read_keys.assert_has_calls(
+            [
+                call(context_paths=[], keys=["SLACK_URL"]),
+                call(context_paths=[], keys=["SLACK_METHOD"]),
+                call(context_paths=[], keys=["SLACK_SESSION_ATTRS"]),
+            ]
+        )

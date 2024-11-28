@@ -21,6 +21,8 @@ def get_default_key_path():
 def get_project_id(
     keys: Optional[Union[str, List[str]]] = None,
     context_paths: Optional[List[str]] = None,
+    schema: Optional[str] = None,
+    env: Optional[str] = None,
     **kwargs,
 ) -> Optional[str]:
     value = kwargs.get("project_id")
@@ -32,31 +34,45 @@ def get_project_id(
         "GC_PROJECT_ID",
         "GOOGLE_PROJECT_ID",
     ]
-    return VENTS_CONFIG.read_keys(context_paths=context_paths, keys=keys)  # type: ignore
+    return VENTS_CONFIG.read_keys(
+        context_paths=context_paths, schema=schema, env=env, keys=keys
+    )  # type: ignore
 
 
 def get_key_path(
     keys: Optional[Union[str, List[str]]] = None,
     context_paths: Optional[List[str]] = None,
+    schema: Optional[str] = None,
+    env: Optional[str] = None,
 ) -> Optional[str]:
     keys = keys or ["GC_KEY_PATH", "GOOGLE_KEY_PATH", "GOOGLE_APPLICATION_CREDENTIALS"]
-    return VENTS_CONFIG.read_keys(context_paths=context_paths, keys=keys)  # type: ignore
+    return VENTS_CONFIG.read_keys(
+        context_paths=context_paths, schema=schema, env=env, keys=keys
+    )  # type: ignore
 
 
 def get_keyfile_dict(
     keys: Optional[Union[str, List[str]]] = None,
     context_paths: Optional[List[str]] = None,
+    schema: Optional[str] = None,
+    env: Optional[str] = None,
 ) -> Optional[Dict]:
     keys = keys or ["GC_KEYFILE_DICT", "GOOGLE_KEYFILE_DICT"]
-    return VENTS_CONFIG.read_keys(context_paths=context_paths, keys=keys)  # type: ignore
+    return VENTS_CONFIG.read_keys(
+        context_paths=context_paths, schema=schema, env=env, keys=keys
+    )  # type: ignore
 
 
 def get_scopes(
     keys: Optional[Union[str, List[str]]] = None,
     context_paths: Optional[List[str]] = None,
+    schema: Optional[str] = None,
+    env: Optional[str] = None,
 ) -> Optional[List[str]]:
     keys = keys or ["GC_SCOPES", "GOOGLE_SCOPES"]
-    scopes = VENTS_CONFIG.read_keys(context_paths=context_paths, keys=keys)
+    scopes = VENTS_CONFIG.read_keys(
+        context_paths=context_paths, schema=schema, env=env, keys=keys
+    )
     scopes = VENTS_CONFIG.config_parser.parse(str)(
         key="scopes",
         value=scopes,

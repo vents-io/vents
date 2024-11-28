@@ -3,7 +3,7 @@ import os
 from typing import TYPE_CHECKING, Dict, Optional
 
 from vents.providers.base import BaseHttpService, BaseService
-from vents.providers.discord.base import get_discord_intents, get_token, get_webhook_url
+from vents.settings import VENTS_CONFIG
 
 if TYPE_CHECKING:
     from vents.connections.connection import Connection
@@ -21,11 +21,28 @@ class DiscordService(BaseService):
     ) -> Optional["DiscordService"]:
         # Check if there are mounting based on secrets/configmaps
         context_paths = []
+        schema = None
+        builtin_env = None
         if connection:
             if connection.secret and connection.secret.mount_path:
                 context_paths.append(connection.secret.mount_path)
-        token = get_token(context_paths=context_paths)
-        intents = get_discord_intents(context_paths=context_paths)
+            if connection.schema:
+                schema = connection.schema
+            if connection.env:
+                builtin_env = connection.env
+
+        token = VENTS_CONFIG.read_keys(
+            context_paths=context_paths,
+            schema=schema,
+            env=builtin_env,
+            keys=["DISCORD_TOKEN"],
+        )
+        intents = VENTS_CONFIG.read_keys(
+            context_paths=context_paths,
+            schema=schema,
+            env=builtin_env,
+            keys=["DISCORD_INTENTS"],
+        )
         return cls(token=token, intents=intents)
 
     def _set_session(self):
@@ -54,5 +71,5 @@ class DiscordWebhookService(BaseHttpService):
         if connection:
             if connection.secret and connection.secret.url:
                 context_paths.append(connection.secret.url)
-        url = get_webhook_url(context_paths=context_paths)
+        url = VENTS_CONFIG.read_keys(context_paths=context_paths, keys=["DISCORD_URL"])
         return cls(url=url)

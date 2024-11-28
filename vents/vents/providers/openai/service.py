@@ -23,20 +23,35 @@ class OpenAIService(BaseService):
     ) -> Optional["OpenAIService"]:
         # Check if there are mounting based on secrets/configmaps
         context_paths = []
+        schema = None
+        builtin_env = None
         if connection:
             if connection.secret and connection.secret.mount_path:
                 context_paths.append(connection.secret.mount_path)
             if connection.config_map and connection.config_map.mount_path:
                 context_paths.append(connection.config_map.mount_path)
+            if connection.schema:
+                schema = connection.schema
+            if connection.env:
+                builtin_env = connection.env
 
         api_key = VENTS_CONFIG.read_keys(
-            context_paths=context_paths, keys=["OPENAI_API_KEY"]
+            context_paths=context_paths,
+            schema=schema,
+            env=builtin_env,
+            keys=["OPENAI_API_KEY"],
         )
         base_url = VENTS_CONFIG.read_keys(
-            context_paths=context_paths, keys=["OPENAI_BASE_URL"]
+            context_paths=context_paths,
+            schema=schema,
+            env=builtin_env,
+            keys=["OPENAI_BASE_URL"],
         )
         kwargs = VENTS_CONFIG.read_keys(
-            context_paths=context_paths, keys=["OPENAI_KWARGS"]
+            context_paths=context_paths,
+            schema=schema,
+            env=builtin_env,
+            keys=["OPENAI_KWARGS"],
         )
         return cls(
             api_key=api_key,

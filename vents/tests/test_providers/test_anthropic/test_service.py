@@ -1,7 +1,7 @@
 import os
 
 from unittest import TestCase
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call, patch
 
 from vents.config import AppConfig
 from vents.providers.anthropic.service import AnthropicService
@@ -26,6 +26,8 @@ class TestAnthropicService(TestCase):
         mock_connection = MagicMock()
         mock_connection.secret.mount_path = "/path/to/secret"
         mock_connection.config_map.mount_path = "/path/to/config"
+        mock_connection.schema = None
+        mock_connection.env = None
 
         service = AnthropicService.load_from_connection(connection=mock_connection)
 
@@ -33,11 +35,21 @@ class TestAnthropicService(TestCase):
         self.assertEqual(service.kwargs, self.kwargs)
 
         expected_paths = ["/path/to/secret", "/path/to/config"]
-        mock_read_keys.assert_any_call(
-            context_paths=expected_paths, keys=["ANTHROPIC_API_KEY"]
-        )
-        mock_read_keys.assert_any_call(
-            context_paths=expected_paths, keys=["ANTHROPIC_KWARGS"]
+        mock_read_keys.assert_has_calls(
+            [
+                call(
+                    context_paths=expected_paths,
+                    schema=None,
+                    env=None,
+                    keys=["ANTHROPIC_API_KEY"],
+                ),
+                call(
+                    context_paths=expected_paths,
+                    schema=None,
+                    env=None,
+                    keys=["ANTHROPIC_KWARGS"],
+                ),
+            ]
         )
 
     @patch.object(AppConfig, "read_keys")
@@ -47,6 +59,8 @@ class TestAnthropicService(TestCase):
         mock_connection = MagicMock()
         mock_connection.secret.mount_path = "/path/to/secret"
         mock_connection.config_map = None
+        mock_connection.schema = None
+        mock_connection.env = None
 
         service = AnthropicService.load_from_connection(connection=mock_connection)
 
@@ -55,10 +69,16 @@ class TestAnthropicService(TestCase):
 
         expected_paths = ["/path/to/secret"]
         mock_read_keys.assert_any_call(
-            context_paths=expected_paths, keys=["ANTHROPIC_API_KEY"]
+            context_paths=expected_paths,
+            schema=None,
+            env=None,
+            keys=["ANTHROPIC_API_KEY"],
         )
         mock_read_keys.assert_any_call(
-            context_paths=expected_paths, keys=["ANTHROPIC_KWARGS"]
+            context_paths=expected_paths,
+            schema=None,
+            env=None,
+            keys=["ANTHROPIC_KWARGS"],
         )
 
     @patch.object(AppConfig, "read_keys")
@@ -70,8 +90,12 @@ class TestAnthropicService(TestCase):
         self.assertEqual(service.api_key, self.api_key)
         self.assertIsNone(service.kwargs)
 
-        mock_read_keys.assert_any_call(context_paths=[], keys=["ANTHROPIC_API_KEY"])
-        mock_read_keys.assert_any_call(context_paths=[], keys=["ANTHROPIC_KWARGS"])
+        mock_read_keys.assert_any_call(
+            context_paths=[], schema=None, env=None, keys=["ANTHROPIC_API_KEY"]
+        )
+        mock_read_keys.assert_any_call(
+            context_paths=[], schema=None, env=None, keys=["ANTHROPIC_KWARGS"]
+        )
 
     @patch("anthropic.Anthropic")
     def test_set_session(self, mock_anthropic_client):

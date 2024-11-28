@@ -29,6 +29,8 @@ class TestOpenAIService(TestCase):
         mock_connection = MagicMock()
         mock_connection.secret.mount_path = "/path/to/secret"
         mock_connection.config_map.mount_path = "/path/to/config"
+        mock_connection.schema = None
+        mock_connection.env = None
 
         service = OpenAIService.load_from_connection(connection=mock_connection)
 
@@ -38,13 +40,16 @@ class TestOpenAIService(TestCase):
 
         expected_paths = ["/path/to/secret", "/path/to/config"]
         mock_read_keys.assert_any_call(
-            context_paths=expected_paths, keys=["OPENAI_API_KEY"]
+            context_paths=expected_paths, keys=["OPENAI_API_KEY"], schema=None, env=None
         )
         mock_read_keys.assert_any_call(
-            context_paths=expected_paths, keys=["OPENAI_BASE_URL"]
+            context_paths=expected_paths,
+            keys=["OPENAI_BASE_URL"],
+            schema=None,
+            env=None,
         )
         mock_read_keys.assert_any_call(
-            context_paths=expected_paths, keys=["OPENAI_KWARGS"]
+            context_paths=expected_paths, keys=["OPENAI_KWARGS"], schema=None, env=None
         )
 
     @patch.object(AppConfig, "read_keys")

@@ -37,15 +37,28 @@ class GCPService(BaseService):
     ) -> Optional["GCPService"]:
         # Check if there are mounting based on secrets/configmaps
         context_paths = []
+        schema = None
+        builtin_env = None
         if connection:
             if connection.secret and connection.secret.mount_path:
                 context_paths.append(connection.secret.mount_path)
             if connection.config_map and connection.config_map.mount_path:
                 context_paths.append(connection.config_map.mount_path)
-        project_id = get_project_id(context_paths=context_paths)
-        key_path = get_key_path(context_paths=context_paths)
-        keyfile_dict = get_keyfile_dict(context_paths=context_paths)
-        scopes = get_scopes(context_paths=context_paths)
+            if connection.schema:
+                schema = connection.schema
+            if connection.env:
+                builtin_env = connection.env
+
+        project_id = get_project_id(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        key_path = get_key_path(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        keyfile_dict = get_keyfile_dict(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        scopes = get_scopes(context_paths=context_paths, schema=schema, env=builtin_env)
         credentials = get_gc_credentials(
             key_path=key_path,
             keyfile_dict=keyfile_dict,

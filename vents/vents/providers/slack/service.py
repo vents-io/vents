@@ -3,7 +3,7 @@ import os
 from typing import TYPE_CHECKING, Optional
 
 from vents.providers.base import BaseHttpService, BaseService
-from vents.providers.slack.base import get_method, get_session_attrs, get_token, get_url
+from vents.settings import VENTS_CONFIG
 
 if TYPE_CHECKING:
     from vents.connections.connection import Connection
@@ -20,10 +20,24 @@ class SlackService(BaseService):
     ) -> Optional["SlackService"]:
         # Check if there are mounting based on secrets/configmaps
         context_paths = []
+        schema = None
+        builtin_env = None
         if connection:
             if connection.secret and connection.secret.mount_path:
                 context_paths.append(connection.secret.mount_path)
-        token = get_token(context_paths=context_paths)
+            if connection.config_map and connection.config_map.mount_path:
+                context_paths.append(connection.config_map.mount_path)
+            if connection.schema:
+                schema = connection.schema
+            if connection.env:
+                builtin_env = connection.env
+
+        token = VENTS_CONFIG.read_keys(
+            context_paths=context_paths,
+            schema=schema,
+            env=builtin_env,
+            keys=["SLACK_TOKEN"],
+        )
         return cls(token=token)
 
     def _set_session(self):
@@ -54,7 +68,7 @@ class SlackWebhookService(BaseService):
         if connection:
             if connection.secret and connection.secret.url:
                 context_paths.append(connection.secret.url)
-        url = get_url(context_paths=context_paths)
+        url = VENTS_CONFIG.read_keys(context_paths=context_paths, keys=["SLACK_URL"])
         return cls(url=url)
 
     def _set_session(self):
@@ -81,7 +95,11 @@ class SlackHttpWebhookService(BaseHttpService):
         if connection:
             if connection.secret and connection.secret.url:
                 context_paths.append(connection.secret.url)
-        url = get_url(context_paths=context_paths)
-        method = get_method(context_paths=context_paths)
-        session_attrs = get_session_attrs(context_paths=context_paths)
+        url = VENTS_CONFIG.read_keys(context_paths=context_paths, keys=["SLACK_URL"])
+        method = VENTS_CONFIG.read_keys(
+            context_paths=context_paths, keys=["SLACK_METHOD"]
+        )
+        session_attrs = VENTS_CONFIG.read_keys(
+            context_paths=context_paths, keys=["SLACK_SESSION_ATTRS"]
+        )
         return cls(url=url, method=method, session_attrs=session_attrs)

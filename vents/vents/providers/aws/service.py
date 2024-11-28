@@ -37,25 +37,55 @@ class AWSService(BaseService):
     ) -> Optional["AWSService"]:
         # Check if there are mounting based on secrets/configmaps
         context_paths = []
+        schema = None
+        builtin_env = None
         if connection:
             if connection.secret and connection.secret.mount_path:
                 context_paths.append(connection.secret.mount_path)
             if connection.config_map and connection.config_map.mount_path:
                 context_paths.append(connection.config_map.mount_path)
-        region = get_region(context_paths=context_paths)
-        endpoint_url = get_endpoint_url(context_paths=context_paths)
-        sts_endpoint_url = get_endpoint_url(
-            keys=["AWS_STS_ENDPOINT_URL"], context_paths=context_paths
+            if connection.schema:
+                schema = connection.schema
+            if connection.env:
+                builtin_env = connection.env
+
+        region = get_region(context_paths=context_paths, schema=schema, env=builtin_env)
+        endpoint_url = get_endpoint_url(
+            context_paths=context_paths, schema=schema, env=builtin_env
         )
-        access_key_id = get_aws_access_key_id(context_paths=context_paths)
-        secret_access_key = get_aws_secret_access_key(context_paths=context_paths)
-        verify_ssl = get_aws_verify_ssl(context_paths=context_paths)
-        use_ssl = get_aws_use_ssl(context_paths=context_paths)
-        session_token = get_aws_security_token(context_paths=context_paths)
-        assume_role = get_aws_assume_role(context_paths=context_paths)
-        role_arn = get_aws_role_arn(context_paths=context_paths)
-        session_name = get_aws_session_name(context_paths=context_paths)
-        session_duration = get_aws_session_duration(context_paths=context_paths)
+        sts_endpoint_url = get_endpoint_url(
+            keys=["AWS_STS_ENDPOINT_URL"],
+            context_paths=context_paths,
+            schema=schema,
+            env=builtin_env,
+        )
+        access_key_id = get_aws_access_key_id(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        secret_access_key = get_aws_secret_access_key(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        verify_ssl = get_aws_verify_ssl(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        use_ssl = get_aws_use_ssl(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        session_token = get_aws_security_token(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        assume_role = get_aws_assume_role(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        role_arn = get_aws_role_arn(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        session_name = get_aws_session_name(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
+        session_duration = get_aws_session_duration(
+            context_paths=context_paths, schema=schema, env=builtin_env
+        )
         if assume_role and role_arn:
             credentials = cls.assume_role(
                 role_arn=role_arn,
