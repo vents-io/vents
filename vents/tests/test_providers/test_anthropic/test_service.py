@@ -26,7 +26,7 @@ class TestAnthropicService(TestCase):
         mock_connection = MagicMock()
         mock_connection.secret.mount_path = "/path/to/secret"
         mock_connection.config_map.mount_path = "/path/to/config"
-        mock_connection.schema = None
+        mock_connection.schema_ = None
         mock_connection.env = None
 
         service = AnthropicService.load_from_connection(connection=mock_connection)
@@ -59,7 +59,7 @@ class TestAnthropicService(TestCase):
         mock_connection = MagicMock()
         mock_connection.secret.mount_path = "/path/to/secret"
         mock_connection.config_map = None
-        mock_connection.schema = None
+        mock_connection.schema_ = None
         mock_connection.env = None
 
         service = AnthropicService.load_from_connection(connection=mock_connection)

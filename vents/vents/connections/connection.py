@@ -28,6 +28,13 @@ class Connection(BaseSchemaModel):
     ] = None
     annotations: Optional[Union[Dict, RefField]] = None
 
+    def get_schema_as_dict(self) -> Dict[str, Any]:
+        schema = self.schema_
+        if hasattr(schema, "to_dict"):
+            schema = schema.to_dict()
+
+        return schema
+
     @classmethod
     def from_model(cls, model) -> "Connection":
         schema = model.schema_

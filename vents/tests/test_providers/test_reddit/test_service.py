@@ -41,7 +41,7 @@ class TestRedditService(TestCase):
 
         mock_connection = MagicMock()
         mock_connection.secret.mount_path = "/path/to/secret"
-        mock_connection.schema = None
+        mock_connection.schema_ = None
         mock_connection.env = None
         mock_connection.config_map = None
 

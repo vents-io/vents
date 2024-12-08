@@ -33,13 +33,13 @@ class TestDiscordService(TestCase):
             [
                 call(
                     context_paths=["/path/to/secret"],
-                    schema=mock_connection.schema,
+                    schema=mock_connection.get_schema_as_dict(),
                     env=mock_connection.env,
                     keys=["DISCORD_TOKEN"],
                 ),
                 call(
                     context_paths=["/path/to/secret"],
-                    schema=mock_connection.schema,
+                    schema=mock_connection.get_schema_as_dict(),
                     env=mock_connection.env,
                     keys=["DISCORD_INTENTS"],
                 ),

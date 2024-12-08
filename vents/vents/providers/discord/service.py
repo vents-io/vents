@@ -26,8 +26,8 @@ class DiscordService(BaseService):
         if connection:
             if connection.secret and connection.secret.mount_path:
                 context_paths.append(connection.secret.mount_path)
-            if connection.schema:
-                schema = connection.schema
+            if connection.schema_:
+                schema = connection.get_schema_as_dict()
             if connection.env:
                 builtin_env = connection.env
 

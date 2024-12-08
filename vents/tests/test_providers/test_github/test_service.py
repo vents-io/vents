@@ -23,7 +23,7 @@ class TestGithubService(TestCase):
         mock_connection = MagicMock()
         mock_connection.secret.token = "/path/to/secret/token"
         mock_connection.config_map.host = "/path/to/config/host"
-        mock_connection.schema = None
+        mock_connection.schema_ = None
         mock_connection.env = None
 
         service = GithubService.load_from_connection(connection=mock_connection)
@@ -54,7 +54,7 @@ class TestGithubService(TestCase):
         mock_connection = MagicMock()
         mock_connection.secret.token = "/path/to/secret/token"
         mock_connection.config_map = None
-        mock_connection.schema = None
+        mock_connection.schema_ = None
         mock_connection.env = None
 
         service = GithubService.load_from_connection(connection=mock_connection)

@@ -29,8 +29,8 @@ class RedditService(BaseService):
                 context_paths.append(connection.secret.mount_path)
             if connection.config_map and connection.config_map.mount_path:
                 context_paths.append(connection.config_map.mount_path)
-            if connection.schema:
-                schema = connection.schema
+            if connection.schema_:
+                schema = connection.get_schema_as_dict()
             if connection.env:
                 builtin_env = connection.env
 
