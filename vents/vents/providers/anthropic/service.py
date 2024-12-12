@@ -18,7 +18,7 @@ class AnthropicService(BaseService):
 
     @classmethod
     def load_from_connection(
-        cls, connection: Optional["Connection"]
+        cls, connection: Optional["Connection"] = None
     ) -> Optional["AnthropicService"]:
         # Check if there are mounting based on secrets/configmaps
         context_paths = []

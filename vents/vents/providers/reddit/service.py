@@ -102,7 +102,7 @@ class RedditRssService(BaseHttpService):
     @classmethod
     def load_from_connection(
         cls,
-        connection: Optional["Connection"],
+        connection: Optional["Connection"] = None,
     ) -> Optional["RedditRssService"]:
         context_paths = []
         if connection:

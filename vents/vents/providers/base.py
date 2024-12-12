@@ -65,7 +65,7 @@ class BaseHttpService(BaseService):
     def _set_session(self):
         self._session = create_session(session_attrs=self.session_attrs)
 
-    def   execute(self, **kwargs):
+    def execute(self, **kwargs):
         url = kwargs.pop("url", self.url)
         return safe_request(
             url=url, method=self.method, session=self.session, **kwargs

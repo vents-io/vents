@@ -17,7 +17,7 @@ class DiscordService(BaseService):
     @classmethod
     def load_from_connection(
         cls,
-        connection: Optional["Connection"],
+        connection: Optional["Connection"] = None,
     ) -> Optional["DiscordService"]:
         # Check if there are mounting based on secrets/configmaps
         context_paths = []
@@ -65,7 +65,7 @@ class DiscordWebhookService(BaseHttpService):
     @classmethod
     def load_from_connection(
         cls,
-        connection: Optional["Connection"],
+        connection: Optional["Connection"] = None,
     ) -> Optional["DiscordWebhookService"]:
         context_paths = []
         if connection:
