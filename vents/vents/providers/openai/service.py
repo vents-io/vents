@@ -64,13 +64,13 @@ class OpenAIService(BaseService):
 
         kwargs = self.kwargs or {}
         self._session = (
-            openai.OpenAI(
+            openai.AsyncOpenAI(
                 api_key=self.api_key,
                 base_url=self.base_url,
                 **kwargs,
             )
             if self.is_async
-            else openai.AsyncOpenAI(
+            else openai.OpenAI(
                 api_key=self.api_key,
                 base_url=self.base_url,
                 **kwargs,

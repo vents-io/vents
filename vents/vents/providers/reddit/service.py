@@ -97,7 +97,7 @@ class RedditService(BaseService):
 
 
 class RedditRssService(BaseHttpService):
-    url: Optional[str] = "https://reddit.com/r/{subreddit}.rss"
+    url: Optional[str] = "https://www.reddit.com/r/{subreddit}.rss"
 
     @classmethod
     def load_from_connection(

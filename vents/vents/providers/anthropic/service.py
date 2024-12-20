@@ -55,9 +55,16 @@ class AnthropicService(BaseService):
         import anthropic
 
         kwargs = self.kwargs or {}
-        self._session = anthropic.Anthropic(
-            api_key=self.api_key,
-            **kwargs,
+        self._session = (
+            anthropic.AsyncAnthropic(
+                api_key=self.api_key,
+                **kwargs,
+            )
+            if self.is_async
+            else anthropic.Anthropic(
+                api_key=self.api_key,
+                **kwargs,
+            )
         )
 
     def set_env_vars(self):
