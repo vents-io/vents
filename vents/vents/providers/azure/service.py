@@ -18,13 +18,13 @@ if TYPE_CHECKING:
 
 
 class AzureService(BaseService):
-    account_name: Optional[str]
-    account_key: Optional[str]
-    connection_string: Optional[str]
-    sas_token: Optional[str]
-    tenant_id: Optional[str]
-    client_id: Optional[str]
-    client_secret: Optional[str]
+    account_name: Optional[str] = None
+    account_key: Optional[str] = None
+    connection_string: Optional[str] = None
+    sas_token: Optional[str] = None
+    tenant_id: Optional[str] = None
+    client_id: Optional[str] = None
+    client_secret: Optional[str] = None
 
     @classmethod
     def load_from_connection(

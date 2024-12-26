@@ -10,11 +10,11 @@ if TYPE_CHECKING:
 
 
 class RedditService(BaseService):
-    client_id: Optional[str]
-    client_secret: Optional[str]
-    user_agent: Optional[str]
-    username: Optional[str]
-    password: Optional[str]
+    client_id: Optional[str] = None
+    client_secret: Optional[str] = None
+    user_agent: Optional[str] = None
+    username: Optional[str] = None
+    password: Optional[str] = None
 
     @classmethod
     def load_from_connection(
