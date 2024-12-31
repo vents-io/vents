@@ -67,6 +67,4 @@ class BaseHttpService(BaseService):
 
     def execute(self, **kwargs):
         url = kwargs.pop("url", self.url)
-        return safe_request(
-            url=url, method=self.method, session=self.session, **kwargs
-        )
+        return safe_request(url=url, method=self.method, session=self.session, **kwargs)
