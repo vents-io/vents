@@ -17,7 +17,7 @@ class S3Service(AWSService):
         self,
         asynchronous: Optional[bool] = False,
         use_listings_cache: Optional[bool] = False,
-        **kwargs
+        **kwargs,
     ):
         config_kwargs = kwargs.get("config_kwargs", {})
         if self.region and "region_name" not in config_kwargs:
@@ -42,7 +42,7 @@ class S3Service(AWSService):
         self,
         asynchronous: Optional[bool] = False,
         use_listings_cache: Optional[bool] = False,
-        **kwargs
+        **kwargs,
     ):
         self._set_session(
             asynchronous=asynchronous,

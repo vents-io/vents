@@ -1,7 +1,5 @@
 from typing import Dict
 
-from clipped.utils.dates import to_timestamp
-
 from vents.notifiers.spec import NotificationSpec
 from vents.notifiers.webhook import WebHookNotifier
 from vents.providers.kinds import ProviderKind

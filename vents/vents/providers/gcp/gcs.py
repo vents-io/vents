@@ -17,21 +17,21 @@ class GCSService(GCPService):
         self,
         asynchronous: Optional[bool] = False,
         use_listings_cache: Optional[bool] = False,
-        **kwargs
+        **kwargs,
     ):
         self._session = GCSFileSystem(
             project=self.project_id,
             token=self.credentials,
             asynchronous=asynchronous,
             use_listings_cache=use_listings_cache,
-            **kwargs
+            **kwargs,
         )
 
     def get_fs(
         self,
         asynchronous: Optional[bool] = False,
         use_listings_cache: Optional[bool] = False,
-        **kwargs
+        **kwargs,
     ):
         self._set_session(
             asynchronous=asynchronous, use_listings_cache=use_listings_cache, **kwargs
