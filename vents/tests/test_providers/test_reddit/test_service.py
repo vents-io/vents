@@ -109,8 +109,8 @@ class TestRedditService(TestCase):
 
 class TestRedditRssService(TestCase):
     def setUp(self):
-        self.url = "https://reddit.com/r/test.rss"
-        self.default_url = "https://reddit.com/r/{subreddit}.rss"
+        self.url = "https://www.reddit.com/r/test.rss"
+        self.default_url = "https://www.reddit.com/r/{subreddit}.rss"
 
     def test_init(self):
         service = RedditRssService(url=self.url)
