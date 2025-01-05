@@ -8,9 +8,8 @@ from clipped.types.ref_or_obj import RefField
 class BucketConnection(BaseSchemaModel):
     _IDENTIFIER = "bucket"
 
-    kind: Optional[
-        StrictStr
-    ] = None  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    kind: Optional[StrictStr] = None
     bucket: StrictStr
 
     def patch(self, schema: "BucketConnection"):
@@ -20,9 +19,8 @@ class BucketConnection(BaseSchemaModel):
 class ClaimConnection(BaseSchemaModel):
     _IDENTIFIER = "volume_claim"
 
-    kind: Optional[
-        StrictStr
-    ] = None  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    kind: Optional[StrictStr] = None
     volume_claim: StrictStr = Field(alias="volumeClaim")
     mount_path: StrictStr = Field(alias="mountPath")
     read_only: Optional[bool] = Field(alias="readOnly", default=None)
@@ -36,9 +34,8 @@ class ClaimConnection(BaseSchemaModel):
 class HostPathConnection(BaseSchemaModel):
     _IDENTIFIER = "host_path"
 
-    kind: Optional[
-        StrictStr
-    ] = None  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    kind: Optional[StrictStr] = None
     host_path: StrictStr = Field(alias="hostPath")
     mount_path: StrictStr = Field(alias="mountPath")
     read_only: Optional[bool] = Field(alias="readOnly", default=None)
@@ -52,9 +49,8 @@ class HostPathConnection(BaseSchemaModel):
 class HostConnection(BaseSchemaModel):
     _IDENTIFIER = "host"
 
-    kind: Optional[
-        StrictStr
-    ] = None  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    kind: Optional[StrictStr] = None
     url: StrictStr
     insecure: Optional[bool] = None
 
@@ -66,9 +62,8 @@ class HostConnection(BaseSchemaModel):
 class GitConnection(BaseSchemaModel):
     _IDENTIFIER = "git"
 
-    kind: Optional[
-        StrictStr
-    ] = None  # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    # TODO: Remove once the kind is not set in the compiler, because the schema is converted to a `dict`
+    kind: Optional[StrictStr] = None
     url: Optional[StrictStr] = None
     revision: Optional[StrictStr] = None
     flags: Optional[List[StrictStr]] = None

@@ -52,10 +52,6 @@ class BaseService(BaseSchemaModel):
     def _set_session(self):
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def load_from_connection(self, **kwargs):
-        raise NotImplementedError
-
 
 class BaseHttpService(BaseService):
     url: Optional[str] = None
