@@ -29,7 +29,7 @@ class BaseService(BaseSchemaModel):
 
     @classmethod
     def load_from_connection(
-        cls, connection: Optional["Connection"]
+        cls, connection: Optional["Connection"] = None
     ) -> Optional["BaseService"]:
         raise NotImplementedError
 
