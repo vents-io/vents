@@ -1,8 +1,8 @@
 import os
 
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Dict, Optional
 
-from clipped.utils.json import orjson_dumps
+from clipped.utils.json import orjson_dumps, orjson_loads
 
 from vents.providers.base import BaseService
 from vents.settings import VENTS_CONFIG
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 class AnthropicService(BaseService):
     api_key: Optional[str] = None
     is_async: bool = False
-    kwargs: Optional[dict] = None
+    kwargs: Optional[Dict] = None
 
     @classmethod
     def load_from_connection(
@@ -46,6 +46,8 @@ class AnthropicService(BaseService):
             env=builtin_env,
             keys=["ANTHROPIC_KWARGS"],
         )
+        if kwargs and not isinstance(kwargs, dict):
+            kwargs = orjson_loads(kwargs)
         return cls(
             api_key=api_key,
             kwargs=kwargs,
