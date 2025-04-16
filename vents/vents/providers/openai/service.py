@@ -19,7 +19,7 @@ class OpenAIService(BaseService):
 
     @classmethod
     def load_from_connection(
-        cls, connection: Optional["Connection"] = None
+        cls, connection: Optional["Connection"] = None, is_async: bool = False
     ) -> Optional["OpenAIService"]:
         # Check if there are mounting based on secrets/configmaps
         context_paths = []
@@ -58,6 +58,7 @@ class OpenAIService(BaseService):
         return cls(
             api_key=api_key,
             base_url=base_url,
+            is_async=is_async,
             kwargs=kwargs,
         )
 

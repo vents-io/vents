@@ -18,7 +18,7 @@ class AnthropicService(BaseService):
 
     @classmethod
     def load_from_connection(
-        cls, connection: Optional["Connection"] = None
+        cls, connection: Optional["Connection"] = None, is_async: bool = False
     ) -> Optional["AnthropicService"]:
         # Check if there are mounting based on secrets/configmaps
         context_paths = []
@@ -50,6 +50,7 @@ class AnthropicService(BaseService):
             kwargs = orjson_loads(kwargs)
         return cls(
             api_key=api_key,
+            is_async=is_async,
             kwargs=kwargs,
         )
 
