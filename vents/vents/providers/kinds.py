@@ -39,6 +39,8 @@ class ProviderKind(str, PEnum):
     DATABRICKS = "databricks"
     SEGMENT = "segment"
     SLACK = "slack"
+    TEAMS = "teams"
+    EMAIL = "email"
     DISCORD = "discord"
     MATTERMOST = "mattermost"
     PAGERDUTY = "pagerduty"
