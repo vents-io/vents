@@ -43,7 +43,10 @@ class TestTeamsWebHookNotifier(TestWebHookNotification):
         assert len(result["potentialAction"]) == 1
         assert result["potentialAction"][0]["@type"] == "OpenUri"
         assert result["potentialAction"][0]["name"] == "View Details"
-        assert result["potentialAction"][0]["targets"][0]["uri"] == "https://example.com/details"
+        assert (
+            result["potentialAction"][0]["targets"][0]["uri"]
+            == "https://example.com/details"
+        )
 
     def test_prepare_without_url(self):
         context = {"title": "Test Title", "text": "Test message"}

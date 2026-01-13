@@ -219,8 +219,18 @@ class TestEmailNotifier(TestCase):
     def test_execute_multiple_configs(self, mock_send_email):
         data = {"subject": "Test", "body_text": "Body"}
         configs = [
-            {"smtp_host": "smtp1.example.com", "smtp_port": 587, "from_email": "a@a.com", "recipients": ["b@b.com"]},
-            {"smtp_host": "smtp2.example.com", "smtp_port": 587, "from_email": "c@c.com", "recipients": ["d@d.com"]},
+            {
+                "smtp_host": "smtp1.example.com",
+                "smtp_port": 587,
+                "from_email": "a@a.com",
+                "recipients": ["b@b.com"],
+            },
+            {
+                "smtp_host": "smtp2.example.com",
+                "smtp_port": 587,
+                "from_email": "c@c.com",
+                "recipients": ["d@d.com"],
+            },
         ]
 
         self.notifier._execute(data, configs)

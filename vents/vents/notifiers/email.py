@@ -28,27 +28,25 @@ class EmailNotifier(BaseNotifier):
 
         for cfg in configs:
             if not cfg.get("smtp_host"):
-                VENTS_CONFIG.logger.warning(
-                    "Email config missing smtp_host: %s", cfg
-                )
+                VENTS_CONFIG.logger.warning("Email config missing smtp_host: %s", cfg)
                 continue
 
             if not cfg.get("recipients"):
-                VENTS_CONFIG.logger.warning(
-                    "Email config missing recipients: %s", cfg
-                )
+                VENTS_CONFIG.logger.warning("Email config missing recipients: %s", cfg)
                 continue
 
-            valid_configs.append({
-                "smtp_host": cfg["smtp_host"],
-                "smtp_port": cfg.get("smtp_port", 587),
-                "smtp_user": cfg.get("smtp_user"),
-                "smtp_password": cfg.get("smtp_password"),
-                "from_email": cfg.get("from_email", "noreply@polyaxon.com"),
-                "recipients": cfg["recipients"],
-                "use_tls": cfg.get("use_tls", True),
-                "use_ssl": cfg.get("use_ssl", False),
-            })
+            valid_configs.append(
+                {
+                    "smtp_host": cfg["smtp_host"],
+                    "smtp_port": cfg.get("smtp_port", 587),
+                    "smtp_user": cfg.get("smtp_user"),
+                    "smtp_password": cfg.get("smtp_password"),
+                    "from_email": cfg.get("from_email", "noreply@polyaxon.com"),
+                    "recipients": cfg["recipients"],
+                    "use_tls": cfg.get("use_tls", True),
+                    "use_ssl": cfg.get("use_ssl", False),
+                }
+            )
 
         return valid_configs
 
