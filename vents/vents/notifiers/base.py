@@ -106,7 +106,7 @@ class BaseNotifier:
         return context
 
     @classmethod
-    def _execute(cls, data: Dict, config: Optional[ConfigType]) -> None:
+    def _execute(cls, data: Dict, config: Optional[ConfigType], **kwargs) -> None:
         raise NotImplementedError
 
     @classmethod
@@ -118,6 +118,7 @@ class BaseNotifier:
         cls,
         notification: NotificationSpec,
         config: Optional[ConfigType] = None,
+        **kwargs,
     ) -> Any:
         if not notification:
             raise VENTS_CONFIG.exception(
@@ -130,7 +131,7 @@ class BaseNotifier:
 
         data = cls._prepare(context)
         try:
-            result = cls._execute(data=data, config=config)
+            result = cls._execute(data=data, config=config, **kwargs)
         except Exception as e:
             VENTS_CONFIG.logger.error(
                 "Exception during the execution of the notifier %s. Error: %s",
