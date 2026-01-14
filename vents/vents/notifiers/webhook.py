@@ -35,17 +35,28 @@ class WebHookNotifier(BaseNotifier):
         return data
 
     @classmethod
-    def _execute(cls, data: Dict, config: List[Dict]) -> None:
+    def _execute(
+        cls,
+        data: Dict,
+        config: List[Dict],
+        validate_url_security: bool = False,
+    ) -> None:
         for web_hook in config:
             data = cls._pre_execute_web_hook(data=data, config=web_hook)
             try:
                 if web_hook["method"] == "POST":
                     safe_request(
-                        url=web_hook["url"], method=web_hook["method"], json=data
+                        url=web_hook["url"],
+                        method=web_hook["method"],
+                        json=data,
+                        validate_url_security=validate_url_security,
                     )
                 else:
                     safe_request(
-                        url=web_hook["url"], method=web_hook["method"], params=data
+                        url=web_hook["url"],
+                        method=web_hook["method"],
+                        params=data,
+                        validate_url_security=validate_url_security,
                     )
             except RequestException:
                 VENTS_CONFIG.logger.warning(
