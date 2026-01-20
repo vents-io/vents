@@ -127,17 +127,9 @@ class BaseNotifier:
         context = cls.serialize_notification_to_context(notification=notification)
         config = cls.get_config(config=config)
         if cls.check_config and not config:
-            return False
+            raise VENTS_CONFIG.exception(
+                "No valid configuration found for notifier {}.".format(cls.name)
+            )
 
         data = cls._prepare(context)
-        try:
-            result = cls._execute(data=data, config=config, **kwargs)
-        except Exception as e:
-            VENTS_CONFIG.logger.error(
-                "Exception during the execution of the notifier %s. Error: %s",
-                cls.name,
-                e,
-                exc_info=True,
-            )
-            return
-        return result
+        return cls._execute(data=data, config=config, **kwargs)
