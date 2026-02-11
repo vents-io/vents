@@ -8,9 +8,6 @@ from vents.providers.aws.service import AWSService
 class S3FileSystem(BaseS3FileSystem):
     retries = 5
 
-    async def _ls(self, path: str, detail: bool = False, force: bool = False):
-        return await super()._ls(path, detail=detail, refresh=force)
-
 
 class S3Service(AWSService):
     def _set_session(
