@@ -1,9 +1,7 @@
 import os
-
 from unittest import TestCase
 
 import boto3
-
 from boto3.resources.base import ServiceResource
 from botocore.client import BaseClient
 from moto import mock_aws

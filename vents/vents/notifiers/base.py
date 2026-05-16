@@ -1,12 +1,11 @@
 import os
-
 from typing import Any, Dict, List, Optional, Union
 
 from clipped.utils.lists import to_list
 from clipped.utils.urls import validate_url
-
 from vents.notifiers.spec import NotificationSpec
 from vents.settings import VENTS_CONFIG
+
 
 ConfigType = Union[Dict, List[Dict]]
 

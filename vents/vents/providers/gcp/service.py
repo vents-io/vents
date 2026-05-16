@@ -1,6 +1,5 @@
 import json
 import os
-
 from typing import TYPE_CHECKING, Any, List, Optional
 
 from google.oauth2.service_account import Credentials
@@ -14,6 +13,7 @@ from vents.providers.gcp.base import (
     get_project_id,
     get_scopes,
 )
+
 
 if TYPE_CHECKING:
     from google.cloud.storage.client import Client

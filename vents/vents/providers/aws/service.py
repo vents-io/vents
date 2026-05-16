@@ -1,5 +1,4 @@
 import os
-
 from typing import TYPE_CHECKING, Optional
 
 from vents.providers.aws.base import (
@@ -16,6 +15,7 @@ from vents.providers.aws.base import (
     get_region,
 )
 from vents.providers.base import BaseService
+
 
 if TYPE_CHECKING:
     from vents.connections.connection import Connection

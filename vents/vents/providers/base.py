@@ -1,10 +1,10 @@
 import abc
-
 from typing import TYPE_CHECKING, Any, Dict, Optional
 
 from clipped.compact.pydantic import PrivateAttr
 from clipped.config.schema import BaseSchemaModel
 from clipped.utils.requests import create_session, safe_request
+
 
 if TYPE_CHECKING:
     from vents.connections.catalog import ConnectionCatalog

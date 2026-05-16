@@ -1,6 +1,5 @@
 import logging
 import os
-
 from typing import Any, Dict, List, Optional, Set, Type, Union
 
 from clipped.compact.pydantic import Field
@@ -8,10 +7,10 @@ from clipped.config.parser import ConfigParser
 from clipped.config.schema import BaseSchemaModel
 from clipped.types import Uri
 from clipped.utils.paths import check_dirname_exists
-
 from vents.connections import ConnectionCatalog
 from vents.connections.connection import Connection
 from vents.exceptions import VentError
+
 
 _logger = logging.getLogger("vents.config.reader")
 

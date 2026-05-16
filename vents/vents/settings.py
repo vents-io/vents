@@ -2,6 +2,7 @@ from typing import Optional
 
 from vents.config import AppConfig
 
+
 VENTS_CONFIG: Optional[AppConfig]
 
 

@@ -1,7 +1,6 @@
 import json
 import os
 import tempfile
-
 from unittest import TestCase
 
 from vents.connections import ConnectionCatalog

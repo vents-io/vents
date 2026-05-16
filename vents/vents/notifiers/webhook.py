@@ -2,7 +2,6 @@ from requests import RequestException
 from typing import Dict, List
 
 from clipped.utils.requests import safe_request
-
 from vents.notifiers.base import BaseNotifier
 from vents.notifiers.spec import NotificationSpec
 from vents.providers.kinds import ProviderKind

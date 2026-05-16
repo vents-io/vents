@@ -1,5 +1,4 @@
 import os
-
 from typing import TYPE_CHECKING, Optional
 
 from vents.providers.azure.base import (
@@ -12,6 +11,7 @@ from vents.providers.azure.base import (
     get_tenant_id,
 )
 from vents.providers.base import BaseService
+
 
 if TYPE_CHECKING:
     from vents.connections.connection import Connection

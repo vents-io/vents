@@ -1,11 +1,11 @@
 import mock
 import os
-
 from unittest import TestCase
 
 from vents.providers.gcp.base import get_gc_credentials
 from vents.providers.gcp.service import GCPService
 from vents.settings import VENTS_CONFIG
+
 
 GCS_MODULE = "vents.providers.gcp.base.{}"
 

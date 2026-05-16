@@ -2,7 +2,6 @@ from unittest import TestCase
 
 from clipped.compact.pydantic import ValidationError
 from clipped.utils.assertions import assert_equal_dict
-
 from vents.connections.connection_resource import ConnectionResource
 
 

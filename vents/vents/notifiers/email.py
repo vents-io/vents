@@ -1,6 +1,6 @@
-import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import smtplib
 from typing import Any, Dict, List, Optional
 
 from vents.notifiers.base import BaseNotifier

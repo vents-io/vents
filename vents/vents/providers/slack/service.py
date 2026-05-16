@@ -1,9 +1,9 @@
 import os
-
 from typing import TYPE_CHECKING, Optional
 
 from vents.providers.base import BaseHttpService, BaseService
 from vents.settings import VENTS_CONFIG
+
 
 if TYPE_CHECKING:
     from vents.connections.connection import Connection

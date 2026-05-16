@@ -2,7 +2,6 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from clipped.utils.tz import now
-
 from vents.notifiers.spec import NotificationSpec
 from vents.notifiers.webhook import WebHookNotifier
 from vents.providers.kinds import ProviderKind

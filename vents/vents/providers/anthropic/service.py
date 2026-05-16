@@ -1,11 +1,10 @@
 import os
-
 from typing import TYPE_CHECKING, Dict, Optional
 
 from clipped.utils.json import orjson_dumps, orjson_loads
-
 from vents.providers.base import BaseService
 from vents.settings import VENTS_CONFIG
+
 
 if TYPE_CHECKING:
     from vents.connections.connection import Connection

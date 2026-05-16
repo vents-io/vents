@@ -1,7 +1,6 @@
 from typing import List, Optional, Union
 
 from clipped.utils.bools import to_bool
-
 from vents.settings import VENTS_CONFIG
 
 

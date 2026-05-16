@@ -4,7 +4,6 @@ from typing_extensions import Literal
 from clipped.compact.pydantic import Field, StrictStr
 from clipped.config.schema import BaseSchemaModel
 from clipped.types.ref_or_obj import RefField
-
 from vents.connections.connection_resource import ConnectionResource
 from vents.connections.connection_schema import ConnectionSchema
 from vents.providers.kinds import ProviderKind
@@ -66,7 +65,6 @@ class Connection(BaseSchemaModel):
             bucket = self.schema_.bucket.rstrip("/")
             if self.is_wasb:
                 from clipped import types
-
                 from vents.settings import VENTS_CONFIG
 
                 return VENTS_CONFIG.config_parser.parse(types.WASB)(

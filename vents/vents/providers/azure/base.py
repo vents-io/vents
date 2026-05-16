@@ -1,9 +1,9 @@
 import logging
 import os
-
 from typing import List, Optional, Union
 
 from vents.settings import VENTS_CONFIG
+
 
 logging.getLogger("azure").setLevel(logging.WARNING)
 logging.getLogger("azure.storage").setLevel(logging.WARNING)

@@ -2,7 +2,6 @@ from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
 from clipped.utils.tz import now
-
 from vents.notifiers.email import EmailNotifier
 from vents.notifiers.spec import NotificationSpec
 from vents.providers.kinds import ProviderKind

@@ -1,15 +1,14 @@
-import os
-
 from collections.abc import Mapping
+import os
 from typing import Dict, List, Optional, Union
 
 import google.auth
 import google.oauth2.service_account
-
-from clipped.utils.json import orjson_loads
 from google.oauth2.service_account import Credentials
 
+from clipped.utils.json import orjson_loads
 from vents.settings import VENTS_CONFIG
+
 
 DEFAULT_SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
 
